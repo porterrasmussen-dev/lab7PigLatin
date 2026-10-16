@@ -12,3 +12,4 @@
 /Users/porter.rasmussen/mycoderepositories/lab7PigLatin/obj/Debug/net10.0/lab7PigLatin.pdb
 /Users/porter.rasmussen/mycoderepositories/lab7PigLatin/obj/Debug/net10.0/lab7PigLatin.genruntimeconfig.cache
 /Users/porter.rasmussen/mycoderepositories/lab7PigLatin/obj/Debug/net10.0/ref/lab7PigLatin.dll
+/Users/porter.rasmussen/mycoderepositories/lab7PigLatin/obj/Debug/net10.0/lab7PigLatin.sourcelink.json
