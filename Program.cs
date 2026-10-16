@@ -68,102 +68,61 @@ for (int i = 0; i < responseArray.Length; i++)
     letterNumbers[i] = responseArray[i] - 'A';
 }
 
+//Make rotors
+string baseAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+string rotor1 = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+string rotor2 = "AJDKSIRUXBLHWTMCQGZNPYFVOE";
+string rotor3 = "BDFHJLCPRTXVZNYEIWGAKMUSQO";
+string reflector = "YRUHQSLDPXNGOKMIEBFZCWVJAT";
+string backwardsRotor1 = "UWYGADFPVZBECKMTHXSLRINQOJ";
+string backwardsRotor2 = "AJPCZWRLFBDKOTYUQGENHXMIVS";
+string backwardsRotor3 = "TAGBPCSDQEUFVNZHYIXJWLRKOM";
+
 //Make shifts
 int shift1 = 0;
 int shift2 = 0;
 int shift3 = 0;
 
-//pass letters through first rotor
-string rotor1 = "EKMFLGDQVZNTOWYHXUSPAIBRCJ";
+//Make stepping mechanism
+bool timeToShift1 = shift1 == 16;
+bool timeToShift2 = shift2 == 4;
+
+//Put message through rotors
 for (int i = 0; i < responseArray.Length; i++)
 {
     if (char.IsLetter(responseArray[i]))
     {
-        responseArray[i] = rotor1[(letterNumbers[i]+shift1)%26];
-        letterNumbers[i] = responseArray[i] - 'A';
-        //Console.Write($"{responseArray[i]} {letterNumbers[i]}, ");
-        shift1++;
-        if (shift1 >= 21)
-        {
-            shift1=0;
-            shift2++;
-        }
-        if (shift2 >= 16)
-        {
-            shift2=0;
-            shift3++;
-        }
-        if (shift3 >= 26)
-        {
-            shift3=0;
-        }
-    }
-}
-Console.WriteLine();
+        //Shifting
+        if (timeToShift2) shift3 = (shift3 +1)%26;
+        if (timeToShift2||timeToShift1) shift2 = (shift2 +1)%26;
+        shift1 = (shift1 +1)%26;
 
-//pass letters through second rotor
-string rotor2 = "ZAQWSXCDERFVBGTYHNMJUIKLOP";
-for (int i = 0; i < responseArray.Length; i++)
-{
-    if (char.IsLetter(responseArray[i]))
-    {
-        responseArray[i] = rotor2[(letterNumbers[i]+shift2)%26];
+        //Encrypting
+        responseArray[i] = baseAlphabet[(rotor1[(letterNumbers[i] + shift1) % 26] - 'A' - shift1 + 26) % 26];
         letterNumbers[i] = responseArray[i] - 'A';
-        //Console.Write($"{responseArray[i]} {letterNumbers[i]}, ");
-        shift1++;
-        if (shift1 >= 21)
-        {
-            shift1=0;
-            shift2++;
-        }
-        if (shift2 >= 16)
-        {
-            shift2=0;
-            shift3++;
-        }
-        if (shift3 >= 26)
-        {
-            shift3=0;
-        }
-    }
-}
-Console.WriteLine();
 
-//pass letters through third rotor
-string rotor3 = "ZAQWSXCDERFVBGTYHNMJUIKLOP";
-for (int i = 0; i < responseArray.Length; i++)
-{
-    if (char.IsLetter(responseArray[i]))
-    {
-        responseArray[i] = rotor3[(letterNumbers[i]+shift3)%26];
+        responseArray[i] = baseAlphabet[(rotor2[(letterNumbers[i] + shift2) % 26] - 'A' - shift2 + 26) % 26];;
         letterNumbers[i] = responseArray[i] - 'A';
-        //Console.Write($"{responseArray[i]} {letterNumbers[i]}, ");
-        shift1++;
-        if (shift1 >= 21)
-        {
-            shift1=0;
-            shift2++;
-        }
-        if (shift2 >= 16)
-        {
-            shift2=0;
-            shift3++;
-        }
-        if (shift3 >= 26)
-        {
-            shift3=0;
-        }
+
+        responseArray[i] = baseAlphabet[(rotor3[(letterNumbers[i] + shift3) % 26] - 'A' - shift3 + 26) % 26];
+        letterNumbers[i] = responseArray[i] - 'A';
+
+        responseArray[i] = reflector[letterNumbers[i]];
+        letterNumbers[i] = responseArray[i] - 'A';
+
+        responseArray[i] = baseAlphabet[(backwardsRotor3[(letterNumbers[i] + shift3) % 26] - 'A' - shift3 + 26) % 26];
+        letterNumbers[i] = responseArray[i] - 'A';
+
+        responseArray[i] = baseAlphabet[(backwardsRotor2[(letterNumbers[i] + shift2) % 26] - 'A' - shift2 + 26) % 26];
+        letterNumbers[i] = responseArray[i] - 'A';
+
+        responseArray[i] = baseAlphabet[(backwardsRotor1[(letterNumbers[i] + shift1) % 26] - 'A' - shift1 + 26) % 26];
+        letterNumbers[i] = responseArray[i] - 'A';
     }
 }
 
-/*
-for (int i = 0; i<responseArray.Length; i++)
-{
-    if (i != 0)
-    {
-        responseArray[i] = responseArray[i].ToLower();
-    }
-}*/
+
 
 string encryptedMessage = new string(responseArray);
+encryptedMessage = encryptedMessage[0] + encryptedMessage.Substring(1).ToLower();
 Console.Write($"\nThe final message is {encryptedMessage}.");
