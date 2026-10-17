@@ -10,14 +10,15 @@ Console.Write("\nWhat message do you want to put through the ePIGma machine? ");
 string input = Console.ReadLine()!;
 input = input.ToUpper();
 
-char punctuation = ' ';
-string noPunctuation = "";
-
 string[] pigArray = input.Split(' ');
+char[] punctuation = new char[pigArray.Length];
+bool[] hadPunct = new bool[pigArray.Length];
+
 
 //Change to Pig Latin
 for (int i = 0; i < pigArray.Length; i++)
 {
+    string noPunctuation = "";
     for (int a = 0; a < pigArray[i].Length; a++)
     {
         if (!char.IsPunctuation(pigArray[i][a]))
@@ -26,7 +27,8 @@ for (int i = 0; i < pigArray.Length; i++)
         }
         else
         {
-            punctuation = pigArray[i][a];
+            punctuation[i] = pigArray[i][a];
+            hadPunct[i] = true;
         }
     }
     pigArray[i] = noPunctuation;
@@ -64,6 +66,10 @@ for (int i = 0; i < pigArray.Length; i++)
 for (int i = 0; i < pigArray.Length; i++)
 {
     pigArray[i] = pigArray[i] + "AY";
+    if (hadPunct[i])
+    {
+        pigArray[i] += punctuation[i];
+    }
 }
 
 string response = string.Join(' ', pigArray);
@@ -98,15 +104,16 @@ int shift1 = 0;
 int shift2 = 0;
 int shift3 = 0;
 
-//Make stepping mechanism
-bool timeToShift1 = shift1 == 16;
-bool timeToShift2 = shift2 == 4;
 
 //Put message through rotors
 for (int i = 0; i < responseArray.Length; i++)
 {
     if (char.IsLetter(responseArray[i]))
     {
+        //Make stepping mechanism
+        bool timeToShift1 = shift1 == 16;
+        bool timeToShift2 = shift2 == 4;
+
         //Shifting
         if (timeToShift2) shift3 = (shift3 +1)%26;
         if (timeToShift2||timeToShift1) shift2 = (shift2 +1)%26;
@@ -135,9 +142,23 @@ for (int i = 0; i < responseArray.Length; i++)
         letterNumbers[i] = responseArray[i] - 'A';
     }
 }
-
-
+response = new string(responseArray);
+Console.WriteLine(response);
 
 string encryptedMessage = new string(responseArray);
+/*
+for (int i = 0; i < response.Length; i++)
+{
+    if (i == punctPosition[i])
+    {
+        encryptedMessage += response[i]+punctuation[i];
+    }
+    else
+    {
+        encryptedMessage += response[i];
+    }
+}*/
+
+
 encryptedMessage = encryptedMessage[0] + encryptedMessage.Substring(1).ToLower();
-Console.Write($"\nThe final message is {encryptedMessage}{punctuation}");
+Console.Write($"\nThe final message is {encryptedMessage}");
