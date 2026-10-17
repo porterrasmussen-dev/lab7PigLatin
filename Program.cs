@@ -9,18 +9,33 @@ Console.Write("\nWhat message do you want to put through the ePIGma machine? ");
 //Take Input
 string input = Console.ReadLine()!;
 input = input.ToUpper();
+
+char punctuation = ' ';
+string noPunctuation = "";
+
 string[] pigArray = input.Split(' ');
 
 //Change to Pig Latin
 for (int i = 0; i < pigArray.Length; i++)
 {
+    for (int a = 0; a < pigArray[i].Length; a++)
+    {
+        if (!char.IsPunctuation(pigArray[i][a]))
+        {
+            noPunctuation += pigArray[i][a];
+        }
+        else
+        {
+            punctuation = pigArray[i][a];
+        }
+    }
+    pigArray[i] = noPunctuation;
     int vowelPosition = -1;
     bool vowelFound = false;
 
     int j = 0;
     while (!vowelFound && j < pigArray[i].Length)
     {
-
         if (pigArray[i][j] == 'A'|| pigArray[i][j] == 'E'|| pigArray[i][j] == 'I'|| pigArray[i][j] == 'O'|| pigArray[i][j] == 'U')
         {
             vowelPosition = j;
@@ -125,4 +140,4 @@ for (int i = 0; i < responseArray.Length; i++)
 
 string encryptedMessage = new string(responseArray);
 encryptedMessage = encryptedMessage[0] + encryptedMessage.Substring(1).ToLower();
-Console.Write($"\nThe final message is {encryptedMessage}.");
+Console.Write($"\nThe final message is {encryptedMessage}{punctuation}");
