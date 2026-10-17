@@ -3,7 +3,7 @@ Console.Clear();
 
 //Welcome
 Console.WriteLine("Welcome to encryption headquarters!\nToday we are testing our latest technology: the ePIGma machine.");
-Console.WriteLine("This machine first converts your message to pig latin, and then puts it through three rotors of the enigma machine.");
+Console.WriteLine("This machine first converts your message to pig latin, and then puts it through the enigma machine.");
 Console.Write("\nWhat message do you want to put through the ePIGma machine? ");
 
 //Take Input
